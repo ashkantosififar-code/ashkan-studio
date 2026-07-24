@@ -86,13 +86,29 @@ document.addEventListener("DOMContentLoaded", () => {
     revealTargets.forEach((el) => observer.observe(el));
   }
 
-  // فرم تماس (بدون بک‌اند: فقط پیام تایید نمایش داده می‌شود)
+  // فرم تماس: درخواست مستقیم به واتساپ ارسال می‌شود (سایت بدون بک‌اند است)
   const form = document.getElementById("contactForm");
   const formNote = document.getElementById("formNote");
+  const WHATSAPP_NUMBER = "989153730687";
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    formNote.textContent = "درخواست شما ثبت شد ✓ به‌زودی باهاتون تماس می‌گیریم.";
+
+    const name = form.name.value.trim();
+    const contact = form.contact.value.trim();
+    const message = form.message.value.trim();
+
+    const text =
+      "درخواست پروژه جدید از سایت:" +
+      "\nنام: " + name +
+      "\nراه تماس: " + contact +
+      "\nتوضیح پروژه: " + (message || "—");
+
+    const waUrl =
+      "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+
+    formNote.textContent = "در حال انتقال به واتساپ... پیام رو از اونجا ارسال کنید.";
+    window.open(waUrl, "_blank");
     form.reset();
   });
 });
